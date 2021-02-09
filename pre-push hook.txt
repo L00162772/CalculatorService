@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Executing unit tests"
+mvn  clean install -DskipTests=false &> ~/project_log.txt
+if [[ $? != 0 ]] ; then
+        echo "There is some failed tests, pleaes check the file ~/project_log.txt"
+        exit 1
+fi
+echo "Everything is ok...pushing :p"
+# ok
+exit 0

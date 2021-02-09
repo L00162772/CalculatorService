@@ -58,7 +58,7 @@ public class CalculatorRestControllerTest {
     @Test
     public void testDivision() throws Exception {
         int numA = 12;
-        int numB = 16;
+        int numB = 6;
         int result = 2;
 
         Mockito.when(calculatorService.divide(Mockito.anyInt(), Mockito.anyInt())).thenReturn(result);
