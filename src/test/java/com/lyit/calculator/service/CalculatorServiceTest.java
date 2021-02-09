@@ -25,7 +25,7 @@ public class CalculatorServiceTest {
     public void testSubtraction() {
         int numA = 35;
         int numB = 6;
-        int expectedResult = 290;
+        int expectedResult = 29;
         int result = calculatorService.subtract(numA, numB);
         assertEquals(result, expectedResult);
     }
