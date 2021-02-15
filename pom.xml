@@ -78,7 +78,19 @@
                             <hooks>
                                 <pre-commit>
                                     #!/bin/bash
-                                    echo "Executing unit tests"
+                                    echo "Executing unit tests pre commit"
+                                    mvn  clean install -DskipTests=false
+                                    if [[ $? != 0 ]] ; then
+                                    echo "There is some failed tests"
+                                    exit 1
+                                    fi
+                                    echo "Everything is ok...pushing :p"
+                                    # ok
+                                    exit 0
+                                </pre-commit>
+                                <pre-commit>
+                                    #!/bin/bash
+                                    echo "Executing unit tests pre push"
                                     mvn  clean install -DskipTests=false
                                     if [[ $? != 0 ]] ; then
                                     echo "There is some failed tests"
