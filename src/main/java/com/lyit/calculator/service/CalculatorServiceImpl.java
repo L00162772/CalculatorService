@@ -13,7 +13,7 @@ public class CalculatorServiceImpl implements ICalculatorService{
      */
     @Override
     public int add(int numA, int numB) {
-        return numA + numA;
+        return numA + numB;
     }
 
     /**
