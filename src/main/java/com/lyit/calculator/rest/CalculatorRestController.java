@@ -17,7 +17,7 @@ public class CalculatorRestController {
     @GetMapping(value = "/add/{numA}/{numB}")
     public int add(@PathVariable("numA") int numA,
                    @PathVariable("numB") int numB) {
-        return calculatorService.add(numA, numB);
+        return calculatorService.add(numA, numA);
     }
 
     @GetMapping(value = "/subtract/{numA}/{numB}")
