@@ -27,7 +27,7 @@ jobs:
     - name: Build and run Docker image
       run: |
         docker build -t calculatorservice .
-        docker run -p 8080:8080 calculatorservice
+        nohup docker run -p 8080:8080 calculatorservice &
     - name: Run Newman tests
       uses: matt-ball/newman-action@master
       with:
