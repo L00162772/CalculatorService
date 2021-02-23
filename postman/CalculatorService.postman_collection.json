@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "e47490f7-4305-4a55-8d9b-b3dcbb3e9fd9",
+		"name": "CalculatorService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Addition Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Addition response body is correct\", function () {",
+							"    pm.response.to.have.body(\"11\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/add/5/6",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"add",
+						"5",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subtraction Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Subtraction response body is correct\", function () {",
+							"    pm.response.to.have.body(\"6\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/subtract/11/5",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"subtract",
+						"11",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Division Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Division response body is correct\", function () {",
+							"    pm.response.to.have.body(\"11\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/divide/55/5",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"divide",
+						"55",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Multiplication Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Multiplication response body is correct\", function () {",
+							"    pm.response.to.have.body(\"275\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/multiply/55/5",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"multiply",
+						"55",
+						"5"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "environment",
+			"value": null
+		}
+	]
+}
