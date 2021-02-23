@@ -21,11 +21,13 @@ jobs:
       with:
         java-version: 11
     - name: Build with Maven - run unit tests
-      run: mvn -B package --file pom.xml
+      run: mvn -B clean install
     - name: Build with Maven - run integration tests
-      run: mvn -B package -PintegrationTest --file pom.xml
+      run: mvn -B clean install -PintegrationTest
     - name: Build and run Docker image
-      run: docker build -t calculatorservice . && docker run -p 8080:8080 calculatorservice
+      run: |
+        docker build -t calculatorservice .
+        docker run -p 8080:8080 calculatorservice
     - name: Run Newman tests
       uses: matt-ball/newman-action@master
       with:
