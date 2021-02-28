@@ -39,12 +39,11 @@ jobs:
       uses: actions/setup-java@master
       with:
         java-version: 15
-    - name: Log current directory
-      run: ls -latr && ls -latr CalculatorService
     - name: Build and run Docker image
       run: |
         # docker build -t calculatorservice .
         # nohup docker run -p 8080:8080 calculatorservice &
+        mvn -B clean package -DskipTests=true &&
         docker-compose -f docker-compose.yml up -d
     - name: Wait for Service To Start
       uses: nev7n/wait_for_response@v1
