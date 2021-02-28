@@ -1,0 +1,13 @@
+
+version: "2.1"
+
+networks:
+  test:
+
+services:
+  calculator-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
