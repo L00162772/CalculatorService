@@ -14,7 +14,7 @@
     <name>calculator</name>
     <description>Calculator Service Project</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>15</java.version>
         <junit-jupiter-engine.version>5.7.1</junit-jupiter-engine.version>
     </properties>
     <dependencies>
