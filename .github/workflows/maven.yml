@@ -39,6 +39,8 @@ jobs:
       uses: actions/setup-java@master
       with:
         java-version: 15
+    - name: Log current directory
+      run: ls -latr && ls -latr CalculatorService
     - name: Build and run Docker image
       run: |
         # docker build -t calculatorservice .
