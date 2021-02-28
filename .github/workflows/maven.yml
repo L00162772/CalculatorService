@@ -10,10 +10,8 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-run-tests:
-
+  run-unit-tests:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@master
     - name: Set up JDK 15
@@ -22,8 +20,18 @@ jobs:
         java-version: 15
     - name: Build with Maven - run unit tests
       run: mvn -B clean install
+
+  run-integration-tests:
+    needs: run-unit-tests
+    runs-on: ubuntu-latest
+    steps:
     - name: Build with Maven - run integration tests
       run: mvn -B clean install -PintegrationTest
+
+  run-postman-tests:
+    needs: run-postman-tests
+    runs-on: ubuntu-latest
+    steps:
     - name: Build and run Docker image
       run: |
         # docker build -t calculatorservice .
