@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: Deploy to ECS
 
 on:
   push:
@@ -8,7 +8,6 @@ on:
 
 jobs:
   deploy-to-ecs:
-    needs: run-postman-tests
     runs-on: Ubuntu-20.04
     steps:
     - name: Configure AWS credentials
