@@ -2,7 +2,7 @@
     "taskDefinitionArn": "arn:aws:ecs:us-east-1:858398790708:task-definition/calculatorservice-taskdefinition:1",
     "containerDefinitions": [
         {
-            "name": "nginx",
+            "name": "calculatorservice-container",
             "image": "nginx:latest",
             "cpu": 0,
             "portMappings": [],
