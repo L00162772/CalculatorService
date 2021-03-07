@@ -10,6 +10,9 @@ jobs:
   deploy-to-ecs:
     runs-on: Ubuntu-20.04
     steps:
+    - name: Configure repo
+      uses: actions/checkout@master
+      
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -30,7 +33,7 @@ jobs:
       run: |
         pwd
         ls -latr
-        ls -latr CalculatorService
+        ls -latr ../
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
