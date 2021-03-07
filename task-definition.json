@@ -1,5 +1,4 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:858398790708:task-definition/calculatorservice-taskdefinition:1",
     "containerDefinitions": [
         {
             "name": "calculatorservice-container",
@@ -24,34 +23,8 @@
     "taskRoleArn": "arn:aws:iam::858398790708:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::858398790708:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 1,
     "volumes": [],
-    "status": "ACTIVE",
-    "requiresAttributes": [
-        {
-            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-        },
-        {
-            "name": "ecs.capability.execution-role-awslogs"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.task-iam-role"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-        },
-        {
-            "name": "ecs.capability.task-eni"
-        }
-    ],
     "placementConstraints": [],
-    "compatibilities": [
-        "EC2",
-        "FARGATE"
-    ],
     "requiresCompatibilities": [
         "FARGATE"
     ],
