@@ -107,7 +107,7 @@
 					"script": {
 						"exec": [
 							"pm.test(\"Division response body is correct\", function () {",
-							"    pm.response.to.have.body(\"12\");",
+							"    pm.response.to.have.body(\"11\");",
 							"});"
 						],
 						"type": "text/javascript"
