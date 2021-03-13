@@ -99,7 +99,7 @@ def getJarName() {
 def getVersion() {
     def pom = readMavenPom file: './pom.xml'
     return pom.version
-}
+} 
 
 def getName() {
     def pom = readMavenPom file: './pom.xml'
