@@ -1,4 +1,4 @@
-FROM openjdk:15-jdk-alpine as build
+FROM openjdk:11-jdk-alpine as build
 
 ENV MAVEN_VERSION 3.6.3
 ENV MAVEN_HOME /usr/lib/mvn
@@ -16,7 +16,7 @@ COPY src src
 RUN mvn install -DskipTests -Dgithook.plugin.skip=true
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-FROM openjdk:15-jdk-alpine
+FROM openjdk:11-jdk-alpine
 ARG DEPENDENCY=/workspace/app/target/dependency
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
