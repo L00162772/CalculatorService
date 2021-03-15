@@ -19,8 +19,8 @@ node {
             }, 'Integration tests': {
                 stage("Runing integration tests") {
                     try {
-                        sh "./mvnw  -B clean package -DskipTests=true &&
-        docker-compose -f docker-compose.yml up -d"
+                        sh "./mvnw  -B clean package -DskipTests=true"
+                        sh "docker-compose -f docker-compose.yml up -d"
                     } catch(err) {
                         step([$class: 'JUnitResultArchiver', testResults: 
                           '**/target/surefire-reports/TEST-' 
