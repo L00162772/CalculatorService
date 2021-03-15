@@ -2,11 +2,11 @@ node {
     stage 'Clone the project'
     git 'https://github.com/L00162772/CalculatorService.git'
   
-    dir('./') {
         stage("Tests and Deployment") {
             parallel 'Unit tests': {
                 stage("Runing unit tests") {
                     try {
+                        sh "pwd"
                         sh "ls -latr"
                         sh "./mvnw -B clean install -PintegrationTest"
                     } catch(err) {
@@ -55,5 +55,5 @@ node {
         }
         
 
-    }
+    
 }
