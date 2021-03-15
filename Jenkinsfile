@@ -7,6 +7,7 @@ node {
             parallel 'Unit tests': {
                 stage("Runing unit tests") {
                     try {
+                        sh "ls -latr"
                         sh "./mvnw -B clean install -PintegrationTest"
                     } catch(err) {
                         step([$class: 'JUnitResultArchiver', testResults: 
