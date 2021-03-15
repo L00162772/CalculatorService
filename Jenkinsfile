@@ -1,13 +1,15 @@
 node {
     stage 'Clone the project'
     git 'https://github.com/L00162772/CalculatorService.git'
-  
+
+    dir('spring-jenkins-pipeline') {
         stage("Tests and Deployment") {
             parallel 'Unit tests': {
                 stage("Runing unit tests") {
                     try {
                         sh "pwd"
                         sh "ls -latr"
+                        sh "ls -latr spring-jenkins-pipeline"
                         sh "./mvnw -B clean install -PintegrationTest"
                     } catch(err) {
                         step([$class: 'JUnitResultArchiver', testResults: 
@@ -52,8 +54,6 @@ node {
                     ])
                 }
             }
-        }
-        
-
-    
+        }        
+    }    
 }
