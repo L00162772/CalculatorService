@@ -2,7 +2,7 @@ node {
     stage 'Clone the project'
     git 'https://github.com/L00162772/CalculatorService.git'
   
-    dir('spring-jenkins-pipeline') {
+    dir('./') {
         stage("Tests and Deployment") {
             parallel 'Unit tests': {
                 stage("Runing unit tests") {
