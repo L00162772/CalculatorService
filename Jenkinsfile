@@ -3,7 +3,7 @@ node {
     git 'https://github.com/L00162772/CalculatorService.git'
   
     dir('spring-jenkins-pipeline') {
-                stage("Tests and Deployment") {
+        stage("Tests and Deployment") {
             parallel 'Unit tests': {
                 stage("Runing unit tests") {
                     try {
