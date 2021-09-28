@@ -14,7 +14,6 @@ pipeline {
                     steps{
                         sh "pwd"
                         sh "ls -latr"
-                        sh "ls -latr spring-jenkins-pipeline"
                         sh "./mvnw -B clean install"
                    
                    step([$class: 'JUnitResultArchiver', testResults: 
