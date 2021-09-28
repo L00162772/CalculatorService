@@ -7,9 +7,10 @@ pipeline {
                 sh 'mvn --version'
             }
         }
-           parallel 
+        stage("Tests and Deployment") {
+            parallel 
             {
-                stage("Runing unit tests") {
+                stage("Running unit tests") {
                     steps{
                         sh "pwd"
                         sh "ls -latr"
@@ -20,8 +21,7 @@ pipeline {
                      '**/target/surefire-reports/TEST-*UnitTest.xml'])
                     }
                 }
-             stage('Integration tests') {
-                stage("Runing integration tests") {
+                stage("Running integration tests") {
                     try {
                         sh "./mvnw  -B clean package -DskipTests=true"
                         sh "docker-compose -f docker-compose.yml up -d"
@@ -34,10 +34,8 @@ pipeline {
                     step([$class: 'JUnitResultArchiver', testResults: 
                       '**/target/surefire-reports/TEST-' 
                         + '*IntegrationTest.xml'])
-                }
             }
-            }
-        
+        }
         stage('Stg2') {
 
             parallel{
