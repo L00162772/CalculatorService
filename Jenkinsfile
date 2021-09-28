@@ -5,6 +5,7 @@ pipeline {
             parallel 
             {
                 stage("Runing unit tests") {
+                    steps{
                     try {
                         sh "pwd"
                         sh "ls -latr"
@@ -17,6 +18,7 @@ pipeline {
                     }
                    step([$class: 'JUnitResultArchiver', testResults: 
                      '**/target/surefire-reports/TEST-*UnitTest.xml'])
+                    }
                 }
              stage('Integration tests') {
                 stage("Runing integration tests") {
