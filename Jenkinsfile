@@ -7,8 +7,7 @@ pipeline {
                 sh 'mvn --version'
             }
         }
-        stage("Tests and Deployment") {
-            parallel 
+           parallel 
             {
                 stage("Runing unit tests") {
                     steps{
@@ -38,7 +37,7 @@ pipeline {
                 }
             }
             }
-        }
+        
         stage('Stg2') {
 
             parallel{
