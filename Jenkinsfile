@@ -6,16 +6,11 @@ pipeline {
             {
                 stage("Runing unit tests") {
                     steps{
-                    try {
                         sh "pwd"
                         sh "ls -latr"
                         sh "ls -latr spring-jenkins-pipeline"
                         sh "./mvnw -B clean install -PintegrationTest"
-                    } catch(err) {
-                        step([$class: 'JUnitResultArchiver', testResults: 
-                          '**/target/surefire-reports/TEST-*UnitTest.xml'])
-                        throw err
-                    }
+                   
                    step([$class: 'JUnitResultArchiver', testResults: 
                      '**/target/surefire-reports/TEST-*UnitTest.xml'])
                     }
