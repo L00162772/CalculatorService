@@ -2,14 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Show Versions') {
-            steps {
-                sh 'mvn --version'
-                sh 'java --version'
-            }
-        }
         stage('build') {
             steps {
+                sh 'mvn --version'
                 sh 'mvn clean install'
             }
         }
