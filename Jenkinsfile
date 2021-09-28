@@ -30,10 +30,7 @@ pipeline {
         stage('Stg3') {
             when {
                not {
-                   branch "main"
-                   steps {
-                       echo "Not main branch"
-                   }
+                   branch "main"                  
                }
             }
         }              
