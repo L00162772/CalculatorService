@@ -1,60 +1,10 @@
 pipeline {
-    agent any
-    stages{
-        stage("Tests and Deployment") {
-            parallel 
-            {
-                stage("Runing unit tests") {
-                    steps{
-                        sh "pwd"
-                        sh "ls -latr"
-                        sh "ls -latr spring-jenkins-pipeline"
-                        sh "./mvnw -B clean install -PintegrationTest"
-                   
-                   step([$class: 'JUnitResultArchiver', testResults: 
-                     '**/target/surefire-reports/TEST-*UnitTest.xml'])
-                    }
-                }
-             stage('Integration tests') {
-                stage("Runing integration tests") {
-                    try {
-                        sh "./mvnw  -B clean package -DskipTests=true"
-                        sh "docker-compose -f docker-compose.yml up -d"
-                    } catch(err) {
-                        step([$class: 'JUnitResultArchiver', testResults: 
-                          '**/target/surefire-reports/TEST-' 
-                            + '*IntegrationTest.xml'])
-                        throw err
-                    }
-                    step([$class: 'JUnitResultArchiver', testResults: 
-                      '**/target/surefire-reports/TEST-' 
-                        + '*IntegrationTest.xml'])
-                }
-            }
+    agent { docker { image 'maven:3.3.3' } }
+    stages {
+        stage('build') {
+            steps {
+                sh 'mvn --version'
             }
         }
-
-        stage("Compilation and Analysis") {
-            parallel 
-            {
-                 stage("Compilation") {
-                    sh "./mvnw clean install -DskipTests"
-                 }
-              stage('Static Analysis') {
-                stage("Checkstyle") {
-                    sh "./mvnw checkstyle:checkstyle"
-                    
-                    step([$class: 'CheckStylePublisher',
-                      canRunOnFailed: true,
-                      defaultEncoding: '',
-                      healthy: '100',
-                      pattern: '**/target/checkstyle-result.xml',
-                      unHealthy: '90',
-                      useStableBuildAsReference: true
-                    ])
-                }
-            }
-        }
-        }        
-    }    
+    }
 }
