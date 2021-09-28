@@ -2,7 +2,7 @@ pipeline {
     agent any
     stages{
         stage("Tests and Deployment") {
-            parallel 'Unit tests': {
+            parallel 'Unit tests' {
                 stage("Runing unit tests") {
                     try {
                         sh "pwd"
@@ -36,7 +36,7 @@ pipeline {
         }
 
         stage("Compilation and Analysis") {
-            parallel 'Compilation': {
+            parallel 'Compilation' {
                 sh "./mvnw clean install -DskipTests"
             }, 'Static Analysis': {
                 stage("Checkstyle") {
