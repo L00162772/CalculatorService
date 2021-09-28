@@ -33,6 +33,9 @@ pipeline {
                    branch "main"                  
                }
             }
+              steps {
+                    echo 'Hello World'
+                }
         }              
     }
 }
