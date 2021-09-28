@@ -5,6 +5,7 @@ pipeline {
         stage('build') {
             steps {
                 sh 'mvn --version'
+                sh 'mvn clean install'
             }
         }
         stage("Tests and Deployment") {
@@ -14,17 +15,17 @@ pipeline {
                     steps{
                         sh "pwd"
                         sh "ls -latr"
-                        sh "./mvnw -B clean install"
+                        sh "./mvnw test install"
                    
                    step([$class: 'JUnitResultArchiver', testResults: 
                      '**/target/surefire-reports/TEST-*UnitTest.xml'])
-                    }
+                    } 
                 }
                 stage("Running integration tests") {
                     steps {
-                        sh "./mvnw  -B clean package -DskipTests=true"
+                        sh "./mvnw package -DskipTests=true"
                         sh "docker-compose -f docker-compose.yml up -d"
-                        sh "./mvnw -B clean install -PintegrationTest"
+                        sh "./mvnw test -PintegrationTest"
                     step([$class: 'JUnitResultArchiver', testResults: 
                       '**/target/surefire-reports/TEST-' 
                         + '*IntegrationTest.xml'])
