@@ -15,7 +15,7 @@ pipeline {
                         sh "pwd"
                         sh "ls -latr"
                         sh "ls -latr spring-jenkins-pipeline"
-                        sh "./mvnw -B clean install -PintegrationTest"
+                        sh "./mvnw -B clean install"
                    
                    step([$class: 'JUnitResultArchiver', testResults: 
                      '**/target/surefire-reports/TEST-*UnitTest.xml'])
@@ -25,6 +25,7 @@ pipeline {
                     steps {
                         sh "./mvnw  -B clean package -DskipTests=true"
                         sh "docker-compose -f docker-compose.yml up -d"
+                        sh "./mvnw -B clean install -PintegrationTest"
                     step([$class: 'JUnitResultArchiver', testResults: 
                       '**/target/surefire-reports/TEST-' 
                         + '*IntegrationTest.xml'])
