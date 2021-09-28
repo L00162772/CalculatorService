@@ -18,7 +18,7 @@ pipeline {
                    step([$class: 'JUnitResultArchiver', testResults: 
                      '**/target/surefire-reports/TEST-*UnitTest.xml'])
                 }
-            }, 'Integration tests': {
+             stage('Integration tests') {
                 stage("Runing integration tests") {
                     try {
                         sh "./mvnw  -B clean package -DskipTests=true"
@@ -33,6 +33,7 @@ pipeline {
                       '**/target/surefire-reports/TEST-' 
                         + '*IntegrationTest.xml'])
                 }
+            }
             }
         }
 
