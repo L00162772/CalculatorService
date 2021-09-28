@@ -22,11 +22,13 @@ pipeline {
                     }
                 }
                 stage("Running integration tests") {
+                    steps {
                         sh "./mvnw  -B clean package -DskipTests=true"
                         sh "docker-compose -f docker-compose.yml up -d"
                     step([$class: 'JUnitResultArchiver', testResults: 
                       '**/target/surefire-reports/TEST-' 
                         + '*IntegrationTest.xml'])
+                    }
                 }
             }
         }
