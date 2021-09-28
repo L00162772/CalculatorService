@@ -43,7 +43,7 @@ pipeline {
                  stage("Compilation") {
                     sh "./mvnw clean install -DskipTests"
                  }
-            }, 'Static Analysis': {
+              stage('Static Analysis') {
                 stage("Checkstyle") {
                     sh "./mvnw checkstyle:checkstyle"
                     
@@ -57,6 +57,7 @@ pipeline {
                     ])
                 }
             }
+        }
         }        
     }    
 }
