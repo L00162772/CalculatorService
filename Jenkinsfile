@@ -7,9 +7,36 @@ pipeline {
                 sh 'mvn --version'
             }
         }
-        stage('Stg1') {
-            steps {
-               echo "Step 1"
+        stage("Tests and Deployment") {
+            parallel 
+            {
+                stage("Runing unit tests") {
+                    steps{
+                        sh "pwd"
+                        sh "ls -latr"
+                        sh "ls -latr spring-jenkins-pipeline"
+                        sh "./mvnw -B clean install -PintegrationTest"
+                   
+                   step([$class: 'JUnitResultArchiver', testResults: 
+                     '**/target/surefire-reports/TEST-*UnitTest.xml'])
+                    }
+                }
+             stage('Integration tests') {
+                stage("Runing integration tests") {
+                    try {
+                        sh "./mvnw  -B clean package -DskipTests=true"
+                        sh "docker-compose -f docker-compose.yml up -d"
+                    } catch(err) {
+                        step([$class: 'JUnitResultArchiver', testResults: 
+                          '**/target/surefire-reports/TEST-' 
+                            + '*IntegrationTest.xml'])
+                        throw err
+                    }
+                    step([$class: 'JUnitResultArchiver', testResults: 
+                      '**/target/surefire-reports/TEST-' 
+                        + '*IntegrationTest.xml'])
+                }
+            }
             }
         }
         stage('Stg2') {
