@@ -8,9 +8,9 @@ pipeline {
                 sh 'mvn clean install'
             }
         }
-        stage("Tests and Deployment") {
-            parallel 
-            {
+        //stage("Tests and Deployment") {
+        //    parallel 
+        //    {
                 stage("Running unit tests") {
                     steps{
                         sh "pwd"
@@ -31,8 +31,8 @@ pipeline {
                         + '*IntegrationTest.xml'])
                     }
                 }
-            }
-        }
+        //    }
+        //}
         stage('Stg2') {
 
             parallel{
