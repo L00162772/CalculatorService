@@ -34,6 +34,7 @@ pipeline {
                     step([$class: 'JUnitResultArchiver', testResults: 
                       '**/target/surefire-reports/TEST-' 
                         + '*IntegrationTest.xml'])
+                }
             }
         }
         stage('Stg2') {
