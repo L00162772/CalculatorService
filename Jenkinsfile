@@ -9,6 +9,9 @@ pipeline {
                 sh 'mvn clean install -DskipTests'
             }
         }
+        stage('Execute tests') {
+
+            parallel{        
                 stage("Running unit tests") {
                     steps{
                         sh "pwd"
@@ -29,6 +32,8 @@ pipeline {
                         + '*Test.xml'])
                     }
                 }
+            }
+        }
         stage('Stg2') {
 
             parallel{
