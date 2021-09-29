@@ -51,7 +51,7 @@ pipeline {
                }
             }
             steps {
-                echo 'Hello World'
+                echo 'Hello World this is not main but the branch is:'+ env.BRANCH_NAME
             }
         }   
         stage('Example') {
@@ -61,7 +61,7 @@ pipeline {
                         echo 'This is not main but it is:' + env.BRANCH_NAME
                         echo 'env:' + env
                     } else {
-                        echo 'things and stuff'
+                        echo 'This is the main branch'
                     }
                 }
             }
