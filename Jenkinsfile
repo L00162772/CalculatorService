@@ -4,6 +4,7 @@ pipeline {
     stages {
         stage('build') {
             steps {
+                echo 'Pulling...' + env.BRANCH_NAME
                 sh 'mvn --version'
                 sh 'mvn clean install -DskipTests'
             }
