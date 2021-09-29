@@ -57,7 +57,8 @@ pipeline {
             steps {
                 script { 
                     if (env.BRANCH_NAME != 'main') {
-                        echo 'This is not main'
+                        echo 'This is not main but it is:' + env.BRANCH_NAME
+                        echo 'env:' + env
                     } else {
                         echo 'things and stuff'
                     }
