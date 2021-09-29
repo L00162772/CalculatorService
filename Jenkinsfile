@@ -8,9 +8,6 @@ pipeline {
                 sh 'mvn clean install -DskipTests'
             }
         }
-        //stage("Tests and Deployment") {
-        //    parallel 
-        //    {
                 stage("Running unit tests") {
                     steps{
                         sh "pwd"
@@ -31,8 +28,6 @@ pipeline {
                         + '*Test.xml'])
                     }
                 }
-        //    }
-        //}
         stage('Stg2') {
 
             parallel{
@@ -51,12 +46,23 @@ pipeline {
         stage('Stg3') {
             when {
                not {
-                   branch "main"                  
+                   branch 'main'                  
                }
             }
             steps {
                 echo 'Hello World'
             }
-        }              
+        }   
+        stage('Example') {
+            steps {
+                script { 
+                    if (env.BRANCH_NAME != 'main') {
+                        echo 'This is not main'
+                    } else {
+                        echo 'things and stuff'
+                    }
+                }
+            }
+        }           
     }
 }
