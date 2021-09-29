@@ -74,7 +74,7 @@
                         </goals>
                         <configuration>
                             <hooks>
-                                <pre-commit>
+                                <!-- <pre-commit>
                                     #!/bin/bash
                                     echo "Executing unit tests pre commit"
                                     mvn  clean install -DskipTests=false
@@ -97,7 +97,7 @@
                                     echo "Everything is ok...pushing :p"
                                     # ok
                                     exit 0
-                                </pre-push>
+                                </pre-push> -->
                             </hooks>
                         </configuration>
                     </execution>
