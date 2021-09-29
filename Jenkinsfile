@@ -5,7 +5,7 @@ pipeline {
         stage('build') {
             steps {
                 sh 'mvn --version'
-                sh 'mvn clean install'
+                sh 'mvn clean install -DskipTests'
             }
         }
         //stage("Tests and Deployment") {
@@ -18,7 +18,7 @@ pipeline {
                         sh "./mvnw test install"
                    
                    step([$class: 'JUnitResultArchiver', testResults: 
-                     '**/target/surefire-reports/TEST-*UnitTest.xml'])
+                     '**/target/surefire-reports/TEST-*Test.xml'])
                     } 
                 }
                 stage("Running integration tests") {
@@ -28,7 +28,7 @@ pipeline {
                         sh "./mvnw test -PintegrationTest"
                     step([$class: 'JUnitResultArchiver', testResults: 
                       '**/target/surefire-reports/TEST-' 
-                        + '*IntegrationTest.xml'])
+                        + '*Test.xml'])
                     }
                 }
         //    }
