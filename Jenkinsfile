@@ -42,6 +42,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Pulling from branch...' + env.BRANCH_NAME
+                echo 'Pulling from branch...' + env.GIT_BRANCH
                 sh 'mvn --version'
                 sh 'mvn clean install -DskipTests=true'
             }
