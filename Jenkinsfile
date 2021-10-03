@@ -8,7 +8,7 @@ pipeline {
         S3_ARTIFACT_NAME = 'calculator.jar'
         AWS_S3_BUCKET = 'elasticbeanstalk-eu-west-1-541450550503'
         AWS_EB_APP_NAME = 'CalculatorService'
-        AWS_EB_ENVIRONMENT_PREFIX = 'Calculatorservice-'
+        AWS_EB_ENVIRONMENT_PREFIX = 'Calculatorservice'
         AWS_EB_APP_VERSION = "${BUILD_ID}"
         BRANCH = "${BRANCH_NAME}"
         REGION = "eu-west-1"
@@ -18,9 +18,6 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Pulling from branch...' + env.BRANCH_NAME
-                sh "echo 'Pulling from branch... $AWS_EB_APP_VERSION'"
-                sh "echo 'Pulling from branch... $BRANCH'"
-
                 sh 'mvn --version'
                 sh 'mvn clean install -DskipTests=true'
             }
@@ -84,7 +81,7 @@ pipeline {
                     sh 'aws configure set region $REGION'
                     sh 'aws s3 cp $JENKINS_ARTIFACT s3://$AWS_S3_BUCKET/$AWS_EB_APP_VERSION-$S3_ARTIFACT_NAME'
                     sh 'aws elasticbeanstalk create-application-version --application-name $AWS_EB_APP_NAME --version-label $AWS_EB_APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=$AWS_EB_APP_VERSION-$S3_ARTIFACT_NAME'
-                    sh 'aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT_PREFIX-$env.BRANCH_NAME --version-label $AWS_EB_APP_VERSION'
+                    sh 'aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT_PREFIX-$BRANCH --version-label $AWS_EB_APP_VERSION'
                 }
             }
         }     
