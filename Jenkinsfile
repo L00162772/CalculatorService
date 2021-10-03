@@ -19,13 +19,7 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
-            steps {
-                echo 'Pulling from branch...' + env.BRANCH_NAME
-                sh 'mvn --version'
-                sh 'mvn clean install -DskipTests=true'
-            }
-        }
+
         stage('Tests123') {
             when {
                not {
@@ -42,6 +36,14 @@ pipeline {
             }
             steps {
                 echo 'main branch'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Pulling from branch...' + env.BRANCH_NAME
+                sh 'mvn --version'
+                sh 'mvn clean install -DskipTests=true'
             }
         }
 
