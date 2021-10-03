@@ -8,19 +8,20 @@ pipeline {
         AWS_S3_BUCKET = 'elasticbeanstalk-eu-west-1-541450550503'
         AWS_EB_APP_VERSION = "${BUILD_ID}"
         REGION = "eu-west-1"
+        BRANCH_NAME = "${GIT_BRANCH.split("/")[1]}"
     }  
 
     parameters {
         string(name: 'jenkinsArtifact', defaultValue: './target/calculator-0.0.1-SNAPSHOT.jar', description: 'Artiftact to publish to elastic beanstalk that was generated with Jenkins')
-        string(name: 's3ArtifactNamePostfix', defaultValue: 'calculator.jar', description: 'Postfix for the stored artifact in jenkins')
+        string(name: 's3ArtifactNamePostfix', defaultValue: 'calculator.jar', description: 'Postfix for the stored artifact in jenkins. The artifact is prefixed with the build number')
         string(name: 'awsEBAppName', defaultValue: 'CalculatorService', description: 'The name of elastic beanstalk application to deploy to')
-        string(name: 'awsEBEnvironmentPrefix', defaultValue: 'Calculatorservice', description: 'The prefix for the elastic beanstalk application environment to deploy to')
+        string(name: 'awsEBEnvironmentPrefix', defaultValue: 'Calculatorservice', description: 'The prefix for the elastic beanstalk application environment to deploy to. The environment is')
     }
 
     stages {
         stage('Build') {
             steps {
-                echo 'Pulling from branch...' + env.GIT_BRANCH
+                echo 'Pulling from branch...' + env.BRANCH_NAME
                 sh 'mvn --version'
                 sh 'mvn clean install -DskipTests=true'
             }
