@@ -22,12 +22,29 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Pulling from branch...' + env.BRANCH_NAME
-                echo 'Pulling from branch...${BRANCH_NAME}'
-                echo 'Pulling from branch...' + env.BRANCH
                 sh 'mvn --version'
                 sh 'mvn clean install -DskipTests=true'
             }
         }
+        stage('Tests123') {
+            when {
+               not {
+                   branch 'develop'                  
+               }
+            }
+            steps {
+                echo 'not develop branch'
+            }
+        }
+        stage('Tests456') {
+            when {
+                branch 'main'                  
+            }
+            steps {
+                echo 'main branch'
+            }
+        }
+
         stage('Tests') {
             when {
                not {
