@@ -2,15 +2,14 @@ pipeline {
     agent any
 
     stages {
-        stage('build') {
+        stage('Build') {
             steps {
-                echo 'Pulling...' + env.BRANCH_NAME
+                echo 'Pulling from branch...' + env.BRANCH_NAME
                 sh 'mvn --version'
                 sh 'mvn clean install -DskipTests'
             }
         }
-        stage('Execute tests') {
-
+        stage('Test') {
             parallel{        
                 stage("Running unit tests") {
                     steps{
@@ -18,19 +17,30 @@ pipeline {
                         sh "ls -latr"
                         sh "./mvnw test install"
                    
-                   step([$class: 'JUnitResultArchiver', testResults: 
-                     '**/target/surefire-reports/TEST-*Test.xml'])
+                   step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*Test.xml'])
                     } 
                 }
                 stage("Running integration tests") {
                     steps {
                         sh "./mvnw package -DskipTests=true"
-                        //sh "docker-compose -f docker-compose.yml up -d"
                         sh "./mvnw test -PintegrationTest"
                     }
                 }
             }
         }
+        stage('Publish') {
+            steps {
+                sh './mvnw package'
+            }
+            post {
+                success {
+                    archiveArtifacts 'target/*.jar'
+                    sh 'aws --version'
+                    sh 'aws configure set region us-east-1'
+                    sh 'aws s3 cp ./target/calculator-0.0.1-SNAPSHOT.jar s3://YOUR-BUCKET-NAME/calculator.jar'
+                }
+            }
+        }        
         stage('Stg2') {
 
             parallel{
