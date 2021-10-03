@@ -23,7 +23,7 @@ pipeline {
         stage('Tests123') {
             when {
                not {
-                   env.GIT_BRANCH 'origin/develop'                  
+                   expression { env.GIT_BRANCH == 'origin/develop' }                
                }
             }
             steps {
@@ -32,7 +32,7 @@ pipeline {
         }
         stage('Tests456') {
             when {
-                env.GIT_BRANCH 'origin/main'                  
+                expression { env.GIT_BRANCH == 'origin/main' }             
             }
             steps {
                 echo 'main branch'
