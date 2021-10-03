@@ -9,6 +9,7 @@ pipeline {
         AWS_EB_APP_NAME = 'CalculatorService'
         AWS_EB_ENVIRONMENT = 'Calculatorservice-env'
         AWS_EB_APP_VERSION = "${BUILD_ID}"
+        REGION = "eu-west-1"
     }  
 
     stages {
@@ -61,7 +62,7 @@ pipeline {
                 success {
                     archiveArtifacts 'target/*.jar'
                     sh 'aws --version'
-                    sh 'aws configure set region us-east-1'
+                    sh 'aws configure set region $REGION'
                     sh 'aws s3 cp ./target/calculator-0.0.1-SNAPSHOT.jar s3://$AWS_S3_BUCKET/$AWS_EB_APP_VERSION-$ARTIFACT_NAME'
                     sh 'aws elasticbeanstalk create-application-version --application-name $AWS_EB_APP_NAME --version-label $AWS_EB_APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=$AWS_EB_APP_VERSION-$ARTIFACT_NAME'
                     sh 'aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT --version-label $AWS_EB_APP_VERSION'
