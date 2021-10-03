@@ -38,12 +38,12 @@ pipeline {
                 }
             }
         }
-        stage('Checkstyle') {
+        stage('Checkstyle Analysis') {
             steps {
                 sh 'mvn checkstyle:checkstyle'
             }
         }        
-        stage('Publish') {
+        stage('Publish Artifact') {
             steps {
                 sh './mvnw package'
             }
