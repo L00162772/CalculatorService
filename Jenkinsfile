@@ -38,11 +38,21 @@ pipeline {
                 }
             }
         }
-        stage('Checkstyle Analysis') {
-            steps {
-                sh 'mvn checkstyle:checkstyle'
+        stage('Development Tools') {
+            parallel{
+                stage('Checkstyle Analysis') {
+                    steps {
+                          sh 'mvn checkstyle:checkstyle'
+                    }
+                }     
+                stage('Javadoc') {
+                    steps {
+                          sh 'mvn javadoc:javadoc'
+                    }
+                }                  
             }
-        }        
+        }          
+   
         stage('Publish Artifact') {
             steps {
                 sh './mvnw package'
