@@ -51,7 +51,7 @@ pipeline {
         stage('Tests') {
             when {
                not {
-                   branch 'main'                  
+                   expression { env.GIT_BRANCH == 'origin/main' }                  
                }
             }
             parallel{        
@@ -74,7 +74,7 @@ pipeline {
         }
         stage('Development Tools') {
             when {
-               branch 'develop'                  
+               expression { env.GIT_BRANCH == 'origin/develop' }                 
             }
             parallel{
                 stage('Checkstyle Analysis') {
@@ -93,8 +93,8 @@ pipeline {
         stage('Publish Artifact') {
             when { 
                 anyOf { 
-                    branch 'test'; 
-                    branch 'main' 
+                    expression { env.GIT_BRANCH == 'origin/test' } 
+                    expression { env.GIT_BRANCH == 'origin/main' } 
                 } 
             }
             steps {
