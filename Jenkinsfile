@@ -5,7 +5,7 @@ pipeline {
         AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
         ARTIFACT_NAME = 'calculator.jar'
-        AWS_S3_BUCKET = 'YOUR S3 BUCKET NAME'
+        AWS_S3_BUCKET = 'elasticbeanstalk-eu-west-1-541450550503'
         AWS_EB_APP_NAME = 'CalculatorService'
         AWS_EB_ENVIRONMENT = 'Calculatorservice-env'
         AWS_EB_APP_VERSION = "${BUILD_ID}"
