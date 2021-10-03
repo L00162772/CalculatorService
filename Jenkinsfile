@@ -4,6 +4,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+
         JENKINS_ARTIFACT = './target/calculator-0.0.1-SNAPSHOT.jar'
         S3_ARTIFACT_NAME = 'calculator.jar'
         AWS_S3_BUCKET = 'elasticbeanstalk-eu-west-1-541450550503'
@@ -15,7 +16,7 @@ pipeline {
     }  
 
     parameters {
-        string(name: 'suiteFile', defaultValue: '', description: 'Suite File')
+        string(name: 'suiteFile', defaultValue: 'this is me suite', description: 'Suite File')
     }
 
     stages {
@@ -23,6 +24,7 @@ pipeline {
             steps {
                 echo 'Pulling from branch...' + env.BRANCH_NAME
                 echo 'Pulling from branch...' + env.GIT_BRANCH
+                echo 'suiteFile...' + params.suiteFile
                 sh 'mvn --version'
                 sh 'mvn clean install -DskipTests=true'
             }
