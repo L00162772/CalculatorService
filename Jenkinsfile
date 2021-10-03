@@ -18,8 +18,9 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Pulling from branch...' + env.BRANCH_NAME
-                echo 'Pulling from branch... $AWS_EB_APP_VERSION'
-                echo 'Pulling from branch... $BRANCH'
+                sh "echo 'Pulling from branch... $AWS_EB_APP_VERSION'"
+                sh "echo 'Pulling from branch... $BRANCH'"
+
                 sh 'mvn --version'
                 sh 'mvn clean install -DskipTests=true'
             }
