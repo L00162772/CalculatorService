@@ -7,7 +7,7 @@ pipeline {
         ARTIFACT_NAME = 'calculator.jar'
         AWS_S3_BUCKET = 'elasticbeanstalk-eu-west-1-541450550503'
         AWS_EB_APP_NAME = 'CalculatorService'
-        AWS_EB_ENVIRONMENT = 'Calculatorservice-${env.BRANCH_NAME}'
+        AWS_EB_ENVIRONMENT = 'Calculatorservice-'${env.BRANCH_NAME}
         AWS_EB_APP_VERSION = "${BUILD_ID}"
         REGION = "eu-west-1"
     }  
