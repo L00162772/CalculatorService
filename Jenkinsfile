@@ -30,7 +30,7 @@ pipeline {
         stage('Tests') {
             when {
                not {
-                   expression { env.GIT_BRANCH == 'origin/main' }                  
+                   expression { env.BRANCH_NAME == 'main' }                  
                }
             }
             parallel{        
@@ -53,7 +53,7 @@ pipeline {
         }
         stage('Development Tools') {
             when {
-               expression { env.GIT_BRANCH == 'origin/develop' }                 
+               expression { env.BRANCH_NAME == 'develop' }                 
             }
             parallel{
                 stage('Checkstyle Analysis') {
@@ -72,8 +72,8 @@ pipeline {
         stage('Publish Artifact') {
             when { 
                 anyOf { 
-                    expression { env.GIT_BRANCH == 'origin/test' } 
-                    expression { env.GIT_BRANCH == 'origin/main' } 
+                    expression { env.BRANCH_NAME == 'test' } 
+                    expression { env.BRANCH_NAME == 'main' } 
                 } 
             }
             steps {
@@ -86,7 +86,7 @@ pipeline {
                     sh "aws configure set region $REGION"
                     sh "aws s3 cp ${params.jenkinsArtifact} s3://$AWS_S3_BUCKET/$AWS_EB_APP_VERSION-${params.s3ArtifactNamePostfix}"
                     sh "aws elasticbeanstalk create-application-version --application-name ${params.awsEBAppName} --version-label $AWS_EB_APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=$AWS_EB_APP_VERSION-${params.s3ArtifactNamePostfix}"
-                    sh "aws elasticbeanstalk update-environment --application-name ${params.awsEBAppName} --environment-name ${params.awsEBEnvironmentPrefix}-$BRANCH --version-label $AWS_EB_APP_VERSION"
+                    sh "aws elasticbeanstalk update-environment --application-name ${params.awsEBAppName} --environment-name ${params.awsEBEnvironmentPrefix}-$BRANCH_NAME --version-label $AWS_EB_APP_VERSION"
                 }
             }
         }     
