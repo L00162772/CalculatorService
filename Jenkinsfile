@@ -14,6 +14,10 @@ pipeline {
         REGION = "eu-west-1"
     }  
 
+    parameters {
+        string(name: 'suiteFile', defaultValue: '', description: 'Suite File')
+    }
+
     stages {
         stage('Build') {
             steps {
