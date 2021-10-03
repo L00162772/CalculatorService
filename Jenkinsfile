@@ -19,26 +19,6 @@ pipeline {
     }
 
     stages {
-
-        stage('Tests123') {
-            when {
-               not {
-                   expression { env.GIT_BRANCH == 'origin/develop' }                
-               }
-            }
-            steps {
-                echo 'not develop branch'
-            }
-        }
-        stage('Tests456') {
-            when {
-                expression { env.GIT_BRANCH == 'origin/main' }             
-            }
-            steps {
-                echo 'main branch'
-            }
-        }
-
         stage('Build') {
             steps {
                 echo 'Pulling from branch...' + env.BRANCH_NAME
