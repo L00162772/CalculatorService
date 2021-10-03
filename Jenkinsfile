@@ -4,25 +4,24 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
-        JENKINS_ARTIFACT = './target/calculator-0.0.1-SNAPSHOT.jar'
-        S3_ARTIFACT_NAME = 'calculator.jar'
+
         AWS_S3_BUCKET = 'elasticbeanstalk-eu-west-1-541450550503'
-        AWS_EB_APP_NAME = 'CalculatorService'
-        AWS_EB_ENVIRONMENT_PREFIX = 'Calculatorservice'
         AWS_EB_APP_VERSION = "${BUILD_ID}"
-        BRANCH = "${BRANCH_NAME}"
         REGION = "eu-west-1"
+        BRANCH_NAME = "${GIT_BRANCH.split("/")[1]}"
     }  
 
     parameters {
-        string(name: 'suiteFile', defaultValue: '', description: 'Suite File')
+        string(name: 'jenkinsArtifact', defaultValue: './target/calculator-0.0.1-SNAPSHOT.jar', description: 'Artiftact to publish to elastic beanstalk that was generated with Jenkins')
+        string(name: 's3ArtifactNamePostfix', defaultValue: 'calculator.jar', description: 'Postfix for the stored artifact in jenkins. The artifact is prefixed with the build number')
+        string(name: 'awsEBAppName', defaultValue: 'CalculatorService', description: 'The name of elastic beanstalk application to deploy to')
+        string(name: 'awsEBEnvironmentPrefix', defaultValue: 'Calculatorservice', description: 'The prefix for the elastic beanstalk application environment to deploy to. The environment is')
     }
 
     stages {
         stage('Build') {
             steps {
                 echo 'Pulling from branch...' + env.BRANCH_NAME
-                echo 'Pulling from branch...' + env.GIT_BRANCH
                 sh 'mvn --version'
                 sh 'mvn clean install -DskipTests=true'
             }
@@ -31,7 +30,7 @@ pipeline {
         stage('Tests') {
             when {
                not {
-                   expression { env.GIT_BRANCH == 'origin/main' }                  
+                   expression { env.BRANCH_NAME == 'main' }                  
                }
             }
             parallel{        
@@ -54,7 +53,7 @@ pipeline {
         }
         stage('Development Tools') {
             when {
-               expression { env.GIT_BRANCH == 'origin/develop' }                 
+               expression { env.BRANCH_NAME == 'develop' }                 
             }
             parallel{
                 stage('Checkstyle Analysis') {
@@ -73,8 +72,8 @@ pipeline {
         stage('Publish Artifact') {
             when { 
                 anyOf { 
-                    expression { env.GIT_BRANCH == 'origin/test' } 
-                    expression { env.GIT_BRANCH == 'origin/main' } 
+                    expression { env.BRANCH_NAME == 'test' } 
+                    expression { env.BRANCH_NAME == 'main' } 
                 } 
             }
             steps {
@@ -83,11 +82,11 @@ pipeline {
             post {
                 success {
                     archiveArtifacts 'target/*.jar'
-                    sh 'aws --version'
-                    sh 'aws configure set region $REGION'
-                    sh 'aws s3 cp $JENKINS_ARTIFACT s3://$AWS_S3_BUCKET/$AWS_EB_APP_VERSION-$S3_ARTIFACT_NAME'
-                    sh 'aws elasticbeanstalk create-application-version --application-name $AWS_EB_APP_NAME --version-label $AWS_EB_APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=$AWS_EB_APP_VERSION-$S3_ARTIFACT_NAME'
-                    sh 'aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT_PREFIX-$BRANCH --version-label $AWS_EB_APP_VERSION'
+                    sh "aws --version"
+                    sh "aws configure set region $REGION"
+                    sh "aws s3 cp ${params.jenkinsArtifact} s3://$AWS_S3_BUCKET/$AWS_EB_APP_VERSION-${params.s3ArtifactNamePostfix}"
+                    sh "aws elasticbeanstalk create-application-version --application-name ${params.awsEBAppName} --version-label $AWS_EB_APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=$AWS_EB_APP_VERSION-${params.s3ArtifactNamePostfix}"
+                    sh "aws elasticbeanstalk update-environment --application-name ${params.awsEBAppName} --environment-name ${params.awsEBEnvironmentPrefix}-$BRANCH_NAME --version-label $AWS_EB_APP_VERSION"
                 }
             }
         }     
