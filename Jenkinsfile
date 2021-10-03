@@ -10,6 +10,7 @@ pipeline {
         AWS_EB_APP_NAME = 'CalculatorService'
         AWS_EB_ENVIRONMENT_PREFIX = 'Calculatorservice-'
         AWS_EB_APP_VERSION = "${BUILD_ID}"
+        BRANCH = "${BRANCH_NAME}"
         REGION = "eu-west-1"
     }  
 
@@ -17,6 +18,8 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Pulling from branch...' + env.BRANCH_NAME
+                echo 'Pulling from branch... $AWS_EB_APP_VERSION'
+                echo 'Pulling from branch... $BRANCH'
                 sh 'mvn --version'
                 sh 'mvn clean install -DskipTests=true'
             }
