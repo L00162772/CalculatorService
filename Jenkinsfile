@@ -20,7 +20,12 @@ pipeline {
                 sh 'mvn clean install -DskipTests'
             }
         }
-        stage('Test') {
+        stage('Tests') {
+            when {
+               not {
+                   branch 'main'                  
+               }
+            }
             parallel{        
                 stage("Running unit tests") {
                     steps{
@@ -40,6 +45,9 @@ pipeline {
             }
         }
         stage('Development Tools') {
+            when {
+               branch 'develop'                  
+            }
             parallel{
                 stage('Checkstyle Analysis') {
                     steps {
@@ -55,6 +63,12 @@ pipeline {
         }          
    
         stage('Publish Artifact') {
+            when { 
+                anyOf { 
+                    branch 'test'; 
+                    branch 'main' 
+                } 
+            }
             steps {
                 sh './mvnw package'
             }
@@ -68,43 +82,6 @@ pipeline {
                     sh 'aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT --version-label $AWS_EB_APP_VERSION'
                 }
             }
-        }        
-        stage('Stg2') {
-
-            parallel{
-                stage('Stg2.1') {
-                    steps {
-                        echo "Step 2.1"
-                     }
-                }
-                stage('Stg2.2') {
-                    steps {
-                        echo "Step 2.2"
-                     }
-                }                
-            }
-        }  
-        stage('Stg3') {
-            when {
-               not {
-                   branch 'main'                  
-               }
-            }
-            steps {
-                echo 'Hello World this is not main but the branch is:'+ env.BRANCH_NAME
-            }
-        }   
-        stage('Example') {
-            steps {
-                script { 
-                    if (env.BRANCH_NAME != 'main') {
-                        echo 'This is not main but it is:' + env.BRANCH_NAME
-                        echo 'env:' + env
-                    } else {
-                        echo 'This is the main branch'
-                    }
-                }
-            }
-        }           
+        }     
     }
 }
