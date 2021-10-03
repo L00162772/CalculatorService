@@ -23,7 +23,7 @@ pipeline {
             steps {
                 echo 'Pulling from branch...' + env.BRANCH_NAME
                 echo 'Pulling from branch...${BRANCH_NAME}'
-                echo 'Pulling from branch...' + ${env.BRANCH}
+                echo 'Pulling from branch...' + env.BRANCH
                 sh 'mvn --version'
                 sh 'mvn clean install -DskipTests=true'
             }
