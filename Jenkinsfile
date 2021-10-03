@@ -85,8 +85,8 @@ pipeline {
                     archiveArtifacts 'target/*.jar'
                     sh 'aws --version'
                     sh 'aws configure set region $REGION'
-                    sh 'aws s3 cp $params.jenkinsArtifact s3://$AWS_S3_BUCKET/$AWS_EB_APP_VERSION-$params.s3ArtifactNamePostfix'
-                    sh 'aws elasticbeanstalk create-application-version --application-name $AWS_EB_APP_NAME --version-label $AWS_EB_APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=$AWS_EB_APP_VERSION-$params.s3ArtifactNamePostfix'
+                    sh 'aws s3 cp ${params.jenkinsArtifact} s3://$AWS_S3_BUCKET/$AWS_EB_APP_VERSION-${params.s3ArtifactNamePostfix}'
+                    sh 'aws elasticbeanstalk create-application-version --application-name $AWS_EB_APP_NAME --version-label $AWS_EB_APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=$AWS_EB_APP_VERSION-${params.s3ArtifactNamePostfix}'
                     sh 'aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT_PREFIX-$BRANCH --version-label $AWS_EB_APP_VERSION'
                 }
             }
