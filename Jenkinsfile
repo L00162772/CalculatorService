@@ -14,18 +14,44 @@ pipeline {
         REGION = "eu-west-1"
     }  
 
+    parameters {
+        string(name: 'suiteFile', defaultValue: '', description: 'Suite File')
+    }
+
     stages {
+
+        stage('Tests123') {
+            when {
+               not {
+                   expression { env.GIT_BRANCH == 'origin/develop' }                
+               }
+            }
+            steps {
+                echo 'not develop branch'
+            }
+        }
+        stage('Tests456') {
+            when {
+                expression { env.GIT_BRANCH == 'origin/main' }             
+            }
+            steps {
+                echo 'main branch'
+            }
+        }
+
         stage('Build') {
             steps {
                 echo 'Pulling from branch...' + env.BRANCH_NAME
+                echo 'Pulling from branch...' + env.GIT_BRANCH
                 sh 'mvn --version'
                 sh 'mvn clean install -DskipTests=true'
             }
         }
+
         stage('Tests') {
             when {
                not {
-                   branch 'main'                  
+                   expression { env.GIT_BRANCH == 'origin/main' }                  
                }
             }
             parallel{        
@@ -48,7 +74,7 @@ pipeline {
         }
         stage('Development Tools') {
             when {
-               branch 'develop'                  
+               expression { env.GIT_BRANCH == 'origin/develop' }                 
             }
             parallel{
                 stage('Checkstyle Analysis') {
@@ -67,8 +93,8 @@ pipeline {
         stage('Publish Artifact') {
             when { 
                 anyOf { 
-                    branch 'test'; 
-                    branch 'main' 
+                    expression { env.GIT_BRANCH == 'origin/test' } 
+                    expression { env.GIT_BRANCH == 'origin/main' } 
                 } 
             }
             steps {
