@@ -28,8 +28,7 @@ pipeline {
                         //sh "docker-compose -f docker-compose.yml up -d"
                         sh "./mvnw test -PintegrationTest"
                     step([$class: 'JUnitResultArchiver', testResults: 
-                      '**/target/surefire-reports/TEST-' 
-                        + '*Test.xml'])
+                      '**/target/surefire-reports/TEST-*Test.xml'])
                     }
                 }
             }
