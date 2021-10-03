@@ -5,11 +5,7 @@ pipeline {
         AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
 
-        JENKINS_ARTIFACT = './target/calculator-0.0.1-SNAPSHOT.jar'
-        S3_ARTIFACT_NAME = 'calculator.jar'
         AWS_S3_BUCKET = 'elasticbeanstalk-eu-west-1-541450550503'
-        AWS_EB_APP_NAME = 'CalculatorService'
-        AWS_EB_ENVIRONMENT_PREFIX = 'Calculatorservice'
         AWS_EB_APP_VERSION = "${BUILD_ID}"
         REGION = "eu-west-1"
     }  
@@ -17,6 +13,8 @@ pipeline {
     parameters {
         string(name: 'jenkinsArtifact', defaultValue: './target/calculator-0.0.1-SNAPSHOT.jar', description: 'Artiftact to publish to elastic beanstalk that was generated with Jenkins')
         string(name: 's3ArtifactNamePostfix', defaultValue: 'calculator.jar', description: 'Postfix for the stored artifact in jenkins')
+        string(name: 'awsEBAppName', defaultValue: 'CalculatorService', description: 'The name of elastic beanstalk application to deploy to')
+        string(name: 'awsEBEnvironmentPrefix', defaultValue: 'Calculatorservice', description: 'The prefix for the elastic beanstalk application environment to deploy to')
     }
 
     stages {
@@ -86,8 +84,8 @@ pipeline {
                     sh "aws --version"
                     sh "aws configure set region $REGION"
                     sh "aws s3 cp ${params.jenkinsArtifact} s3://$AWS_S3_BUCKET/$AWS_EB_APP_VERSION-${params.s3ArtifactNamePostfix}"
-                    sh "aws elasticbeanstalk create-application-version --application-name $AWS_EB_APP_NAME --version-label $AWS_EB_APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=$AWS_EB_APP_VERSION-${params.s3ArtifactNamePostfix}"
-                    sh "aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT_PREFIX-$BRANCH --version-label $AWS_EB_APP_VERSION"
+                    sh "aws elasticbeanstalk create-application-version --application-name ${params.awsEBAppName} --version-label $AWS_EB_APP_VERSION --source-bundle S3Bucket=$AWS_S3_BUCKET,S3Key=$AWS_EB_APP_VERSION-${params.s3ArtifactNamePostfix}"
+                    sh "aws elasticbeanstalk update-environment --application-name ${params.awsEBAppName} --environment-name ${params.awsEBEnvironmentPrefix}-$BRANCH --version-label $AWS_EB_APP_VERSION"
                 }
             }
         }     
