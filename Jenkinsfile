@@ -23,7 +23,7 @@ pipeline {
         stage('Tests123') {
             when {
                not {
-                   branch '*/develop'                  
+                   branch 'origin/develop'                  
                }
             }
             steps {
@@ -32,7 +32,7 @@ pipeline {
         }
         stage('Tests456') {
             when {
-                branch '*/main'                  
+                branch 'origin/main'                  
             }
             steps {
                 echo 'main branch'
