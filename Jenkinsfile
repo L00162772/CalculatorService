@@ -1,7 +1,10 @@
 pipeline {
     agent any
 
+    //Setup the required environment variables
     environment {
+        // The AWS access and secret key are created as jenkins secrets and referenced in this file
+        // These credentials should never be stored in source control
         AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
 
