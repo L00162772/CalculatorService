@@ -24,7 +24,7 @@ pipeline {
                 slackSend botUser: true, 
                           channel: '#damien-jenkins-lyit', 
                           color: '#00ff00', 
-                          message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})",
+                          message: "STARTED: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL})",
                           tokenCredentialId: 'SlackBot-Jenkins'
             }
         }    
@@ -126,7 +126,7 @@ pipeline {
                 slackSend botUser: true, 
                           channel: '#damien-jenkins-lyit', 
                           color: '#00ff00', 
-                          message: "Completed: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}).\n Duration:  ${currentBuild.durationString} \n Result: ${currentBuild.currentResult}",
+                          message: "Completed: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}).\n Duration (millis):  ${currentBuild.duration} \n Duration(string):  ${currentBuild.durationString} \n Result: ${currentBuild.currentResult}",
                           tokenCredentialId: 'SlackBot-Jenkins'
             }
         }                 
