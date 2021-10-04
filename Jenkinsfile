@@ -19,7 +19,6 @@ pipeline {
     }
 
     stages {
-
         stage('Notification - Start') {
             steps {
                 slackSend botUser: true, 
