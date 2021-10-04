@@ -46,7 +46,7 @@ public class CalculatorRestControllerIT {
         System.out.println("Here I AM");
         int numA = 55;
         int numB = 5;
-        int result = numA * numB;
+        int result = numA * numB + 1;
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/multiply/" + numA + "/" + numB, Integer.class)).isEqualTo(result);
     }
 }
