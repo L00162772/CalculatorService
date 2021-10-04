@@ -27,7 +27,8 @@ pipeline {
                           message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})",
                           tokenCredentialId: 'SlackBot-Jenkins'
             }
-        }        
+        }    
+
         stage('Build') {
             steps {
                 echo 'Pulling from branch...' + env.BRANCH_NAME
@@ -119,6 +120,15 @@ pipeline {
                 echo "CurrentBuild (changeSets): ${currentBuild.changeSets}"        
                 echo "CurrentBuild (keepLog): ${currentBuild.keepLog}"                                                                           
             }
-        }        
+        }   
+        stage('Notification - End') {
+            steps {
+                slackSend botUser: true, 
+                          channel: '#damien-jenkins-lyit', 
+                          color: '#00ff00', 
+                          message: "Completed: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}).\n Duration:  ${currentBuild.durationString} \n Result: ${currentBuild.currentResult}",
+                          tokenCredentialId: 'SlackBot-Jenkins'
+            }
+        }                 
     }
 }
