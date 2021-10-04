@@ -100,36 +100,7 @@ pipeline {
                     sh "aws elasticbeanstalk update-environment --application-name ${params.awsEBAppName} --environment-name ${params.awsEBEnvironmentPrefix}-$BRANCH_NAME --version-label $AWS_EB_APP_VERSION"
                 }
             }
-        }       
-        stage('Metrics') {
-            steps {
-                echo "Build Time (timeInMillis): ${currentBuild.timeInMillis}" 
-                echo "Build Time (startTimeInMillis): ${currentBuild.startTimeInMillis}" 
-                echo "Build Time (duration): ${currentBuild.duration}" 
-                echo "Build Time (durationString): ${currentBuild.durationString}"            
-                echo "CurrentBuild (number): ${currentBuild.number}"    
-                echo "CurrentBuild (currentResult): ${currentBuild.currentResult}"  
-                echo "CurrentBuild (displayName): ${currentBuild.displayName}"  
-                echo "CurrentBuild (fullDisplayName): ${currentBuild.fullDisplayName}"  
-                echo "CurrentBuild (projectName): ${currentBuild.projectName}"  
-                echo "CurrentBuild (fullProjectName): ${currentBuild.fullProjectName}"                                                                                                                                                                                                         
-                echo "CurrentBuild (description): ${currentBuild.description}"  
-                echo "CurrentBuild (id): ${currentBuild.id}"  
-                echo "CurrentBuild (absoluteUrl): ${currentBuild.absoluteUrl}"                                         
-                echo "CurrentBuild (buildVariables): ${currentBuild.buildVariables}"        
-                echo "CurrentBuild (changeSets): ${currentBuild.changeSets}"        
-                echo "CurrentBuild (keepLog): ${currentBuild.keepLog}"                                                                                         
-            }
-        }   
-        stage('Notification - End') {
-            steps {
-                slackSend botUser: true, 
-                          channel: '#damien-jenkins-lyit', 
-                          color: '#00ff00', 
-                          message: "Completed: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}).\n Duration (millis):  ${currentBuild.duration} \n Duration(string):  ${currentBuild.durationString} \n Result: ${currentBuild.currentResult}",
-                          tokenCredentialId: 'SlackBot-Jenkins'
-            }
-        }                           
+        }                   
     }
     post {
             always {
@@ -152,7 +123,7 @@ pipeline {
 
                 slackSend botUser: true, 
                       channel: '#damien-jenkins-lyit', 
-                      color: '#00ff00', 
+                      color: ${currentBuild.currentResult} === 'SUCCESS' : '#00ff00' : 'red', 
                       message: "Completed: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}).\n Duration (millis):  ${currentBuild.duration} \n Duration(string):  ${currentBuild.durationString} \n Result: ${currentBuild.currentResult}",
                       tokenCredentialId: 'SlackBot-Jenkins'                      
                 }

@@ -16,7 +16,7 @@ public class CalculatorServiceTest {
     public void testAddition() {
         int numA = 5;
         int numB = 6;
-        int expectedResult = 119;
+        int expectedResult = 11;
         int result = calculatorService.add(numA, numB);
         assertEquals(result, expectedResult);
     }
@@ -25,7 +25,7 @@ public class CalculatorServiceTest {
     public void testSubtraction() {
         int numA = 35;
         int numB = 6;
-        int expectedResult = 299;
+        int expectedResult = 29;
         int result = calculatorService.subtract(numA, numB);
         assertEquals(result, expectedResult);
     }
@@ -34,7 +34,7 @@ public class CalculatorServiceTest {
     public void testDivision() {
         int numA = 30;
         int numB = 5;
-        int expectedResult = 69;
+        int expectedResult = 6;
         int result = calculatorService.divide(numA, numB);
         assertEquals(result, expectedResult);
     }
@@ -43,7 +43,7 @@ public class CalculatorServiceTest {
     public void testMultiplication() {
         int numA = 5;
         int numB = 6;
-        int expectedResult = 309;
+        int expectedResult = 30;
         int result = calculatorService.multiply(numA, numB);
         assertEquals(result, expectedResult);
     }
