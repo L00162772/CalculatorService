@@ -89,6 +89,11 @@ pipeline {
                     sh "aws elasticbeanstalk update-environment --application-name ${params.awsEBAppName} --environment-name ${params.awsEBEnvironmentPrefix}-$BRANCH_NAME --version-label $AWS_EB_APP_VERSION"
                 }
             }
-        }     
+        }   
+        stage('Metrics') {
+            steps {
+                echo "Build Time: ${currentBuild.durationString}" 
+            }
+        }        
     }
 }
