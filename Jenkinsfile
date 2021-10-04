@@ -21,22 +21,22 @@ pipeline {
     stages {
 
         stage('Writing html file')
-        {
+        steps{{
         sh 'echo "<html>" >> myfile.html'
         sh 'echo "<header><title> This is the title</title></header>" >> myfile.html'
         sh 'echo "<body> how do you do? </body>" >> myfile.html'
         sh 'echo "</html>" >> myfile.html'
         sh 'ls -al myfile.html'
         sh 'head -1 myfile.html'
-        }
+        }}
         stage('Email')
-        {
+        steps{{
         env.ForEmailPlugin = env.WORKSPACE
         emailext mimeType: 'text/html',
         body: '${FILE, path="myfile.html"}',
         subject: currentBuild.currentResult + " : " + env.JOB_NAME,
-        to: 'example@example.com'
-        }   
+        to: 'damien.gallagher@gmail.com'
+        }   }
 
         stage('Notification - Start') {
             steps {
