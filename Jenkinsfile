@@ -49,7 +49,7 @@ pipeline {
                     steps{
                         sh "pwd"
                         sh "ls -latr"
-                        sh "./mvnw test install"
+                        sh "./mvnw test -Dmaven.test.failure.ignore=false"
                    
                    step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*Test.xml'])
                     } 
@@ -57,7 +57,7 @@ pipeline {
                 stage("Running integration tests") {
                     steps {
                         sh "./mvnw package -DskipTests=true"
-                        sh "./mvnw test -PintegrationTest"
+                        sh "./mvnw test -PintegrationTest -Dmaven.test.failure.ignore=false"
                     }
                 }
             }
