@@ -43,10 +43,9 @@ public class CalculatorRestControllerIT {
 
     @Test
     public void testMultiplication() throws Exception {
-        System.out.println("Here I AM");
         int numA = 55;
         int numB = 5;
-        int result = numA * numB + 1;
+        int result = numA * numB;
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/multiply/" + numA + "/" + numB, Integer.class)).isEqualTo(result);
     }
 }

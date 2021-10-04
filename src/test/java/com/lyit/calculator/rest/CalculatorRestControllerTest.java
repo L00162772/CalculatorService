@@ -25,7 +25,7 @@ public class CalculatorRestControllerTest {
     public void testAddition() throws Exception {
         int numA = 5;
         int numB = 6;
-        int result = 11;
+        int result = 12;
 
         Mockito.when(calculatorService.add(Mockito.anyInt(), Mockito.anyInt())).thenReturn(result);
 
