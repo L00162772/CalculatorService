@@ -20,24 +20,6 @@ pipeline {
 
     stages {
 
-        stage('Writing html file')
-        {steps{
-        sh 'echo "<html>" >> myfile.html'
-        sh 'echo "<header><title> This is the title</title></header>" >> myfile.html'
-        sh 'echo "<body> how do you do? </body>" >> myfile.html'
-        sh 'echo "</html>" >> myfile.html'
-        sh 'ls -al myfile.html'
-        sh 'head -1 myfile.html'
-        }}
-        stage('Email')
-        {steps{
-
-        emailext mimeType: 'text/html',
-        body: '${FILE, path="myfile.html"}',
-        subject: currentBuild.currentResult + " : " + env.JOB_NAME,
-        to: 'damien.gallagher@gmail.com'
-        }   }
-
         stage('Notification - Start') {
             steps {
                 slackSend botUser: true, 
@@ -125,23 +107,7 @@ pipeline {
         always {
             mail to: 'damien.gallagher@gmail.com',
                      subject: "${currentBuild.currentResult} Pipeline: ${currentBuild.fullDisplayName}",
-                     body: "The status of the job ${env.BUILD_URL} is ${currentBuild.currentResult}"
-            echo "Build Time (timeInMillis): ${currentBuild.timeInMillis}" 
-            echo "Build Time (startTimeInMillis): ${currentBuild.startTimeInMillis}" 
-            echo "Build Time (duration): ${currentBuild.duration}" 
-            echo "Build Time (durationString): ${currentBuild.durationString}"            
-            echo "CurrentBuild (number): ${currentBuild.number}"    
-            echo "CurrentBuild (currentResult): ${currentBuild.currentResult}"  
-            echo "CurrentBuild (displayName): ${currentBuild.displayName}"  
-            echo "CurrentBuild (fullDisplayName): ${currentBuild.fullDisplayName}"  
-            echo "CurrentBuild (projectName): ${currentBuild.projectName}"  
-            echo "CurrentBuild (fullProjectName): ${currentBuild.fullProjectName}"                                                                                                                                                                                                         
-            echo "CurrentBuild (description): ${currentBuild.description}"  
-            echo "CurrentBuild (id): ${currentBuild.id}"  
-            echo "CurrentBuild (absoluteUrl): ${currentBuild.absoluteUrl}"                                         
-            echo "CurrentBuild (buildVariables): ${currentBuild.buildVariables}"        
-            echo "CurrentBuild (changeSets): ${currentBuild.changeSets}"        
-            echo "CurrentBuild (keepLog): ${currentBuild.keepLog}" 
+                     body: "The status of the job ${env.BUILD_URL} is ${currentBuild.currentResult} \n\n Build Time (timeInMillis): ${currentBuild.timeInMillis} \nBuild Time (startTimeInMillis): ${currentBuild.startTimeInMillis} \n Build Time (duration): ${currentBuild.duration} \n Build Time (durationString): ${currentBuild.durationString} \n CurrentBuild (number): ${currentBuild.number} \nCurrentBuild (currentResult): ${currentBuild.currentResult} \n CurrentBuild (displayName): ${currentBuild.displayName} \n CurrentBuild (fullDisplayName): ${currentBuild.fullDisplayName} \n CurrentBuild (projectName): ${currentBuild.projectName} \nCurrentBuild (fullProjectName): ${currentBuild.fullProjectName} \n CurrentBuild (description): ${currentBuild.description} \nCurrentBuild (id): ${currentBuild.id} \n CurrentBuild (absoluteUrl): ${currentBuild.absoluteUrl} \n CurrentBuild (buildVariables): ${currentBuild.buildVariables} \nCurrentBuild (changeSets): ${currentBuild.changeSets} \n CurrentBuild (keepLog): ${currentBuild.keepLog}" 
         }
         success {
             slackSend botUser: true, 
