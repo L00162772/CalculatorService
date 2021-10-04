@@ -22,6 +22,11 @@ pipeline {
         stage('Slack') {
             steps {
                 slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                slackSend botUser: true, 
+                            channel: 'builds', 
+                            color: '#00ff00', 
+                            message: 'Testing Jekins with Slack', 
+                            tokenCredentialId: 'SlackBot-Jenkins'
             }
         }        
         stage('Build') {
