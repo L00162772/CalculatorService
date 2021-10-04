@@ -19,6 +19,25 @@ pipeline {
     }
 
     stages {
+
+        stage('Writing html file')
+        {
+        sh 'echo "<html>" >> myfile.html'
+        sh 'echo "<header><title> This is the title</title></header>" >> myfile.html'
+        sh 'echo "<body> how do you do? </body>" >> myfile.html'
+        sh 'echo "</html>" >> myfile.html'
+        sh 'ls -al myfile.html'
+        sh 'head -1 myfile.html'
+        }
+        stage('Email')
+        {
+        env.ForEmailPlugin = env.WORKSPACE
+        emailext mimeType: 'text/html',
+        body: '${FILE, path="myfile.html"}',
+        subject: currentBuild.currentResult + " : " + env.JOB_NAME,
+        to: 'example@example.com'
+        }   
+
         stage('Notification - Start') {
             steps {
                 slackSend botUser: true, 
@@ -104,10 +123,10 @@ pipeline {
     }
     post {
         always {
-            emailext to: 'damien.gallagher@gmail.com',
+            mail to: 'damien.gallagher@gmail.com',
                      subject: "${currentBuild.currentResult} Pipeline: ${currentBuild.fullDisplayName}",
-                     body: "The status of the job ${env.BUILD_URL} is ${currentBuild.currentResult} \n
-            Build Time (timeInMillis): ${currentBuild.timeInMillis}"
+                     body: "The status of the job ${env.BUILD_URL} is ${currentBuild.currentResult}"
+            echo "Build Time (timeInMillis): ${currentBuild.timeInMillis}" 
             echo "Build Time (startTimeInMillis): ${currentBuild.startTimeInMillis}" 
             echo "Build Time (duration): ${currentBuild.duration}" 
             echo "Build Time (durationString): ${currentBuild.durationString}"            
