@@ -9,7 +9,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
 
         // These environment variables are used in different stages of the project
-        //They are the same for each app environemnt (develop, test and production) so that author added them as environment variables to demonstrate that knowledge
+        // They are the same for each app environemnt (develop, test and production) so that author added them as environment variables to demonstrate that knowledge
         // They could as easily been defined as parameters and that solution would have worked
         AWS_S3_BUCKET = 'elasticbeanstalk-eu-west-1-541450550503'
         AWS_EB_APP_VERSION = "${BUILD_ID}"
@@ -59,7 +59,8 @@ pipeline {
                }
             }
             // The author decided the unit tests and integration tests can run in parralel - this will speed up the pipeline
-            parallel{        
+            parallel{ 
+                // The unit tests are run and the option to ignore test failures is false - this ensures the pipeline will fail if a single test failes       
                 stage("Running unit tests") {
                     steps{
                         sh "pwd"
@@ -69,6 +70,7 @@ pipeline {
                    step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*Test.xml'])
                     } 
                 }
+                // The integrations tests are run and the option to ignore test failures is false - this ensures the pipeline will fail if a single test failes
                 stage("Running integration tests") {
                     steps {
                         sh "./mvnw package -DskipTests=true"
