@@ -21,7 +21,7 @@ pipeline {
     stages {
 
         stage('Writing html file')
-        steps{{
+        {steps{
         sh 'echo "<html>" >> myfile.html'
         sh 'echo "<header><title> This is the title</title></header>" >> myfile.html'
         sh 'echo "<body> how do you do? </body>" >> myfile.html'
@@ -30,7 +30,7 @@ pipeline {
         sh 'head -1 myfile.html'
         }}
         stage('Email')
-        steps{{
+        {steps{
         env.ForEmailPlugin = env.WORKSPACE
         emailext mimeType: 'text/html',
         body: '${FILE, path="myfile.html"}',
