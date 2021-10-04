@@ -92,7 +92,24 @@ pipeline {
         }   
         stage('Metrics') {
             steps {
-                echo "Build Time: ${currentBuild.durationString}" 
+                echo "Build Time (currentBuild): ${currentBuild}" 
+                echo "Build Time (timeInMillis): ${currentBuild.timeInMillis}" 
+                echo "Build Time (startTimeInMillis): ${currentBuild.startTimeInMillis}" 
+                echo "Build Time (duration): ${currentBuild.duration}" 
+                echo "Build Time (durationString): ${currentBuild.durationString}"            
+                echo "CurrentBuild (number): ${currentBuild.number}"    
+                echo "CurrentBuild (currentResult): ${currentBuild.currentResult}"  
+                echo "CurrentBuild (result): ${currentBuild.result}"  
+                echo "CurrentBuild (displayName): ${currentBuild.displayName}"  
+                echo "CurrentBuild (fullDisplayName): ${currentBuild.fullDisplayName}"  
+                echo "CurrentBuild (projectName): ${currentBuild.projectName}"  
+                echo "CurrentBuild (fullProjectName): ${currentBuild.fullProjectName}"                                                                                                                                                                                                         
+                echo "CurrentBuild (description): ${currentBuild.description}"  
+                echo "CurrentBuild (id): ${currentBuild.id}"  
+                echo "CurrentBuild (absoluteUrl): ${currentBuild.absoluteUrl}"                                         
+                echo "CurrentBuild (buildVariables): ${currentBuild.buildVariables}"        
+                echo "CurrentBuild (changeSets): ${currentBuild.changeSets}"        
+                echo "CurrentBuild (keepLog): ${currentBuild.keepLog}"                                                                           
             }
         }        
     }
