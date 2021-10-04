@@ -19,6 +19,16 @@ pipeline {
     }
 
     stages {
+        stage('Notification - Start') {
+            steps {
+                slackSend botUser: true, 
+                          channel: '#damien-jenkins-lyit', 
+                          color: '#00ff00', 
+                          message: "STARTED: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL})",
+                          tokenCredentialId: 'SlackBot-Jenkins'
+            }
+        }    
+
         stage('Build') {
             steps {
                 echo 'Pulling from branch...' + env.BRANCH_NAME
@@ -26,6 +36,7 @@ pipeline {
                 sh 'mvn clean install -DskipTests=true'
             }
         }
+
 
         stage('Tests') {
             when {
@@ -38,7 +49,7 @@ pipeline {
                     steps{
                         sh "pwd"
                         sh "ls -latr"
-                        sh "./mvnw test install"
+                        sh "./mvnw test -Dmaven.test.failure.ignore=false"
                    
                    step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*Test.xml'])
                     } 
@@ -46,7 +57,7 @@ pipeline {
                 stage("Running integration tests") {
                     steps {
                         sh "./mvnw package -DskipTests=true"
-                        sh "./mvnw test -PintegrationTest"
+                        sh "./mvnw test -PintegrationTest -Dmaven.test.failure.ignore=false"
                     }
                 }
             }
@@ -89,6 +100,47 @@ pipeline {
                     sh "aws elasticbeanstalk update-environment --application-name ${params.awsEBAppName} --environment-name ${params.awsEBEnvironmentPrefix}-$BRANCH_NAME --version-label $AWS_EB_APP_VERSION"
                 }
             }
-        }     
+        }                   
     }
+    post {
+            always {
+                echo "Build Time (timeInMillis): ${currentBuild.timeInMillis}" 
+                echo "Build Time (startTimeInMillis): ${currentBuild.startTimeInMillis}" 
+                echo "Build Time (duration): ${currentBuild.duration}" 
+                echo "Build Time (durationString): ${currentBuild.durationString}"            
+                echo "CurrentBuild (number): ${currentBuild.number}"    
+                echo "CurrentBuild (currentResult): ${currentBuild.currentResult}"  
+                echo "CurrentBuild (displayName): ${currentBuild.displayName}"  
+                echo "CurrentBuild (fullDisplayName): ${currentBuild.fullDisplayName}"  
+                echo "CurrentBuild (projectName): ${currentBuild.projectName}"  
+                echo "CurrentBuild (fullProjectName): ${currentBuild.fullProjectName}"                                                                                                                                                                                                         
+                echo "CurrentBuild (description): ${currentBuild.description}"  
+                echo "CurrentBuild (id): ${currentBuild.id}"  
+                echo "CurrentBuild (absoluteUrl): ${currentBuild.absoluteUrl}"                                         
+                echo "CurrentBuild (buildVariables): ${currentBuild.buildVariables}"        
+                echo "CurrentBuild (changeSets): ${currentBuild.changeSets}"        
+                echo "CurrentBuild (keepLog): ${currentBuild.keepLog}" 
+            }
+            success {
+                slackSend botUser: true, 
+                      channel: '#damien-jenkins-lyit', 
+                      color: '#33cc33', 
+                      message: "Success \n Completed: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}).\n Duration (millis):  ${currentBuild.duration} \n Duration(string):  ${currentBuild.durationString} \n Result: ${currentBuild.currentResult}",
+                      tokenCredentialId: 'SlackBot-Jenkins'                      
+            }
+            unstable {
+                slackSend botUser: true, 
+                      channel: '#damien-jenkins-lyit', 
+                      color: '#ffff00', 
+                      message: "Unstable \n Completed: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}).\n Duration (millis):  ${currentBuild.duration} \n Duration(string):  ${currentBuild.durationString} \n Result: ${currentBuild.currentResult}",
+                      tokenCredentialId: 'SlackBot-Jenkins'                      
+            }   
+            failure {
+                slackSend botUser: true, 
+                      channel: '#damien-jenkins-lyit', 
+                      color: '#ff0000', 
+                      message: "Failure \n Completed: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}).\n Duration (millis):  ${currentBuild.duration} \n Duration(string):  ${currentBuild.durationString} \n Result: ${currentBuild.currentResult}",
+                      tokenCredentialId: 'SlackBot-Jenkins'                      
+            }                      
+        }      
 }
