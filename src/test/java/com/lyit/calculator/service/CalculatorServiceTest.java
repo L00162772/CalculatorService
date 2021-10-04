@@ -16,7 +16,7 @@ public class CalculatorServiceTest {
     public void testAddition() {
         int numA = 5;
         int numB = 6;
-        int expectedResult = 112;
+        int expectedResult = 11;
         int result = calculatorService.add(numA, numB);
         assertEquals(result, expectedResult);
     }
