@@ -19,6 +19,11 @@ pipeline {
     }
 
     stages {
+        stage('Slack') {
+            steps {
+                slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            }
+        }        
         stage('Build') {
             steps {
                 echo 'Pulling from branch...' + env.BRANCH_NAME
@@ -26,6 +31,7 @@ pipeline {
                 sh 'mvn clean install -DskipTests=true'
             }
         }
+
 
         stage('Tests') {
             when {
