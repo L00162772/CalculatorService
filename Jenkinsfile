@@ -106,8 +106,8 @@ pipeline {
         always {
             mail to: 'damien.gallagher@gmail.com',
                      subject: "${currentBuild.currentResult} Pipeline: ${currentBuild.fullDisplayName}",
-                     body: `The status of the job ${env.BUILD_URL} is ${currentBuild.currentResult} \n
-            Build Time (timeInMillis): ${currentBuild.timeInMillis}`
+                     body: 'The status of the job ${env.BUILD_URL} is ${currentBuild.currentResult} \n
+            Build Time (timeInMillis): ${currentBuild.timeInMillis}'
             echo "Build Time (startTimeInMillis): ${currentBuild.startTimeInMillis}" 
             echo "Build Time (duration): ${currentBuild.duration}" 
             echo "Build Time (durationString): ${currentBuild.durationString}"            
