@@ -120,12 +120,27 @@ pipeline {
                 echo "CurrentBuild (buildVariables): ${currentBuild.buildVariables}"        
                 echo "CurrentBuild (changeSets): ${currentBuild.changeSets}"        
                 echo "CurrentBuild (keepLog): ${currentBuild.keepLog}" 
-
+            }
+            success {
                 slackSend botUser: true, 
                       channel: '#damien-jenkins-lyit', 
-                      color: ${currentBuild.currentResult} === 'SUCCESS' : '#00ff00' : 'red', 
-                      message: "Completed: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}).\n Duration (millis):  ${currentBuild.duration} \n Duration(string):  ${currentBuild.durationString} \n Result: ${currentBuild.currentResult}",
+                      color: '#33cc33', 
+                      message: "Success \n Completed: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}).\n Duration (millis):  ${currentBuild.duration} \n Duration(string):  ${currentBuild.durationString} \n Result: ${currentBuild.currentResult}",
                       tokenCredentialId: 'SlackBot-Jenkins'                      
-                }
+            }
+            unstable {
+                slackSend botUser: true, 
+                      channel: '#damien-jenkins-lyit', 
+                      color: '#ffff00', 
+                      message: "Unstable \n Completed: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}).\n Duration (millis):  ${currentBuild.duration} \n Duration(string):  ${currentBuild.durationString} \n Result: ${currentBuild.currentResult}",
+                      tokenCredentialId: 'SlackBot-Jenkins'                      
+            }   
+            failure {
+                slackSend botUser: true, 
+                      channel: '#damien-jenkins-lyit', 
+                      color: '#ff0000', 
+                      message: "Failure \n Completed: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}] (${env.BUILD_URL}).\n Duration (millis):  ${currentBuild.duration} \n Duration(string):  ${currentBuild.durationString} \n Result: ${currentBuild.currentResult}",
+                      tokenCredentialId: 'SlackBot-Jenkins'                      
+            }                      
         }      
 }
